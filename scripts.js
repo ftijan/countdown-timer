@@ -1,23 +1,50 @@
 const flipCard = document.querySelector(".flip-card")
 
-flip(flipCard)
+// new 24 hour timer
+const countToDate = new Date().setHours(new Date().getHours() + 24)
 
-function flip(flipCard) {
+let previousTimeBetweenDates
+setInterval(() => {
+    const currentDate = new Date()
+    const timeBetweenDates = Math.ceil((countToDate - currentDate) / 1000)
+    
+    flipAllCards(timeBetweenDates)    
+
+    previousTimeBetweenDates = timeBetweenDates
+}, 250)
+
+function flipAllCards(time) {
+    const seconds = time % 60
+    const minutes = Math.floor(time / 60 % 60)
+    const hours = Math.floor(time / 3600)
+    
+    flip(document.querySelector("#hours-tens"), Math.floor(hours / 10))
+    flip(document.querySelector("#hours-ones"), hours % 10)
+    flip(document.querySelector("#minutes-tens"), Math.floor(minutes / 10))
+    flip(document.querySelector("#minutes-ones"), minutes % 10)
+    flip(document.querySelector("#seconds-tens"), Math.floor(seconds / 10))
+    flip(document.querySelector("#seconds-ones"), seconds % 10)
+}
+
+function flip(flipCard, newNumber) {
     const topHalf = flipCard.querySelector(".top")
+    const startNumber = parseInt(topHalf.textContent)
+
+    if (newNumber === startNumber) return
+
     const bottomHalf = flipCard.querySelector(".bottom")
     const topFlip = document.createElement("div")
     topFlip.classList.add("top-flip")
     const bottomFlip = document.createElement("div")
     bottomFlip.classList.add("bottom-flip")
-    const startNumber = parseInt(topHalf.textContent)
 
     topHalf.textContent = startNumber
     bottomHalf.textContent = startNumber
     topFlip.textContent = startNumber
-    bottomFlip.textContent = startNumber - 1
+    bottomFlip.textContent = newNumber
 
     topFlip.addEventListener("animationstart", e => {
-        topHalf.textContent = startNumber - 1
+        topHalf.textContent = newNumber
     })
 
     topFlip.addEventListener("animationend", e => {
@@ -25,7 +52,7 @@ function flip(flipCard) {
     })
 
     bottomFlip.addEventListener("animationend", e => {
-        bottomHalf.textContent = startNumber - 1
+        bottomHalf.textContent = newNumber
         bottomFlip.remove()
     })
 
