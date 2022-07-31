@@ -72,3 +72,25 @@ body {
         transform: rotateX(0deg);
     }
 }
+
+.container {
+    display: flex;
+    gap: .5em;
+    justify-content: center;
+}
+
+.container-segment {
+    display: flex;
+    flex-direction: column;
+    gap: .1em;
+    align-items: center;
+}
+
+.segment {
+    display: flex;
+    gap: .1em;
+}
+
+.segment-title {
+    font-size: 1rem;
+}
